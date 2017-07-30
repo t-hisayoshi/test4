@@ -2,29 +2,14 @@
 <html>
   <body>
     <script>
-    window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+    var fs = require('fs');
 
-    function onError () { console.log ('Error : ', arguments); }
+    var path = 'output.txt';
+    var content = 'Hello World!';
+    fs.write(path, content, 'w');
 
-    navigator.webkitPersistentStorage.requestQuota (1024*1024*1024, function(grantedBytes) {
-      console.log ('requestQuota: ', arguments);
-      requestFS(grantedBytes);
-    }, onError);
-      
-    function requestFS(grantedBytes) {
-      window.webkitRequestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, onError);
-    }
-
-    function onInitFs(fs) {
-      // getFile の第2引数で「create: true」を付けるとファイルを新規作成する。
-      fs.root.getFile('log.txt', {create: true, exclusive: true}, function(fileEntry) {
-        console.log(fileEntry.isFile); // true
-        console.log(fileEntry.name); // log.txt 
-        console.log(fileEntry.fullPath); // /log.txt 
-      }, onError);
-    }
-
+    phantom.exit();
     </script>
-    yyy
+    yyyz
   </body>
 </html>
