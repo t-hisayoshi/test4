@@ -2,11 +2,29 @@
 <html>
   <body>
     <script>
-    var fs = CreateObject("Scripting.FileSystemObject");
-    var file = fs.OpenTextFile("test.txt", 2);
-    file.Write("マルペケつくろ～");
-    file.Close();
+    window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+
+    function onError () { console.log ('Error : ', arguments); }
+
+    navigator.webkitPersistentStorage.requestQuota (1024*1024*1024, function(grantedBytes) {
+      console.log ('requestQuota: ', arguments);
+      requestFS(grantedBytes);
+    }, onError);
+      
+    function requestFS(grantedBytes) {
+      window.webkitRequestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, onError);
+    }
+
+    function onInitFs(fs) {
+      // getFile の第2引数で「create: true」を付けるとファイルを新規作成する。
+      fs.root.getFile('log.txt', {create: true, exclusive: true}, function(fileEntry) {
+        console.log(fileEntry.isFile); // true
+        console.log(fileEntry.name); // log.txt 
+        console.log(fileEntry.fullPath); // /log.txt 
+      }, onError);
+    }
+
     </script>
-    xxx
+    yyy
   </body>
 </html>
