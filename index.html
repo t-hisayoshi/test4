@@ -2,8 +2,7 @@
 <html>
   <body>
     <script>
-    var fs = WScript.CreateObject("Scripting.FileSystemObject");
-    var file = fs.CreateTextFile("text.txt");
+    var file = fs.OpenTextFile("test.txt", 2);
     file.Write("マルペケつくろ～");
     file.Close();
     </script>
